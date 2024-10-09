@@ -1,0 +1,20 @@
+<div class="bg-gray-400 rounded-b-lg sm:rounded-lg m-4">
+    <div class="sm:hidden">
+        <button (click)="toggle()" class="w-full text-left p-4 bg-gray-300 flex justify-between items-center">
+            <span>Información de Distribución</span>
+            <span [ngClass]="{ 'rotate-180': isOpen }" class="transition-transform">
+                &#9660;
+            </span>
+        </button>
+
+        <div *ngIf="isOpen" class="p-4">
+            <p>Contenido detallado sobre la distribución estadística seleccionada.</p>
+            <p>asadsada</p>
+            <p>asdasdsd</p>
+        </div>
+    </div>
+
+    <div class="hidden sm:block p-4">
+        <p>Contenido detallado sobre la distribución estadística seleccionada.</p>
+    </div>
+</div>

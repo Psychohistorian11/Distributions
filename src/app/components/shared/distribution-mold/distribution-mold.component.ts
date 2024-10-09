@@ -1,14 +1,14 @@
 import { Component, HostListener, inject, Input } from '@angular/core';
 import { Distribution } from '../../../models/distribution.model';
 import { NgFor, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { GetInfoDistributionsService } from '../../../services/get-info-distributions.service';
 
 
 @Component({
   selector: 'app-distribution-mold',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [NgIf, NgFor, RouterLink],
   templateUrl: './distribution-mold.component.html'
 })
 export class DistributionMoldComponent {
@@ -36,4 +36,4 @@ export class DistributionMoldComponent {
   onSeeDistributionButton(name: string) {
     this.router.navigate([`/distributions/${name}`])
   }
-}
+} 

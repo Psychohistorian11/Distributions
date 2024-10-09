@@ -17,11 +17,14 @@ export const routes: Routes = [
                         path: '', component: DistributionMoldComponent,
                     },
                     {
-                        path: ':distribution', component: DistributionPageComponent
+                        path: ':input', component: DistributionPageComponent
                     }
                 ]
             }
         ]
+    },
+    {
+        path: '**', redirectTo: '', pathMatch: 'full'
     }
 
 ];
