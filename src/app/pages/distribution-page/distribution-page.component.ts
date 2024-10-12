@@ -12,6 +12,7 @@ import { DistributionContentComponent } from "../../components/distributions/dis
 })
 export class DistributionPageComponent implements OnInit {
 
+
   private route = inject(ActivatedRoute)
   public distributionName = ''
 

@@ -1,20 +1,48 @@
-<div class="bg-gray-400 rounded-b-lg sm:rounded-lg m-4">
+<div class="rounded-b-lg sm:rounded-lg m-4 bg-white shadow-lg">
     <div class="sm:hidden">
-        <button (click)="toggle()" class="w-full text-left p-4 bg-gray-300 flex justify-between items-center">
+        <button (click)="toggle()"
+            class="w-full text-left p-4 bg-gray-300 flex justify-between items-center hover:bg-gray-400 transition-colors">
             <span>Información de Distribución</span>
-            <span [ngClass]="{ 'rotate-180': isOpen }" class="transition-transform">
+            <span [ngClass]="{ 'rotate-180': isOpen }" class="transition-transform duration-300">
                 &#9660;
             </span>
         </button>
 
         <div *ngIf="isOpen" class="p-4">
             <p>Contenido detallado sobre la distribución estadística seleccionada.</p>
-            <p>asadsada</p>
-            <p>asdasdsd</p>
+
         </div>
     </div>
 
-    <div class="hidden sm:block p-4">
-        <p>Contenido detallado sobre la distribución estadística seleccionada.</p>
+    <div class="hidden sm:block p-6 min-h-[250px]">
+        <div class="flex justify-between space-x-4">
+            <a (click)="showSection('definition')"
+                class="button text-2xl border-b-2 border-transparent w-full text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                Definición
+            </a>
+            <a (click)="showSection('parameters')"
+                class="button text-2xl border-b-2 border-transparent w-full text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                Parámetros
+            </a>
+            <a (click)="showSection('applications')"
+                class="button text-2xl border-b-2 border-transparent w-full text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                Aplicaciones
+            </a>
+        </div>
+
+        <div *ngIf="selectedSection === 'definition'" class="mt-6">
+            <p>{{ distribution?.description }}</p>
+        </div>
+
+        <div *ngIf="selectedSection === 'parameters'" class="mt-6">
+            <p>Parámetros: {{ distribution?.parameters }}</p>
+
+            <app-distribution-math [distributionFunction]="distribution!"></app-distribution-math>
+        </div>
+
+        <div *ngIf="selectedSection === 'applications'" class="mt-6">
+            <p>Aplicaciones: <br>{{ distribution?.applications }}</p><br>
+            <p>Ejemplos:<br>{{ distribution?.examples }}</p>
+        </div>
     </div>
 </div>

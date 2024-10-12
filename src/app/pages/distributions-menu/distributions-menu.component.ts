@@ -6,7 +6,7 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-distributions-menu',
   standalone: true,
-  imports: [DistributionMoldComponent, NgFor, RouterOutlet],
+  imports: [RouterOutlet],
   templateUrl: './distributions-menu.component.html'
 })
 export class DistributionsMenuComponent {
