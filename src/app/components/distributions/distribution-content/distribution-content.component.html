@@ -8,24 +8,52 @@
             </span>
         </button>
 
-        <div *ngIf="isOpen" class="p-4">
+        <div *ngIf="isOpen" class="p-4 space-y-2 text-sm">
             <p>Contenido detallado sobre la distribución estadística seleccionada.</p>
 
+            <div class="flex flex-col space-y-2">
+                <a (click)="showSection('definition')"
+                    class="button border-b-2 border-transparent pb-1 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                    Definición
+                </a>
+                <a (click)="showSection('parameters')"
+                    class="button border-b-2 border-transparent pb-1 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                    Parámetros
+                </a>
+                <a (click)="showSection('applications')"
+                    class="button border-b-2 border-transparent pb-1 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                    Aplicaciones
+                </a>
+            </div>
+
+            <div *ngIf="selectedSection === 'definition'" class="mt-4">
+                <p>{{ distribution?.description }}</p>
+            </div>
+
+            <div *ngIf="selectedSection === 'parameters'" class="mt-4">
+                <p>Parámetros: {{ distribution?.parameters }}</p>
+                <app-distribution-math [distributionFunction]="distribution!"></app-distribution-math>
+            </div>
+
+            <div *ngIf="selectedSection === 'applications'" class="mt-4">
+                <p>Aplicaciones: <br>{{ distribution?.applications }}</p><br>
+                <p>Ejemplos:<br>{{ distribution?.examples }}</p>
+            </div>
         </div>
     </div>
 
     <div class="hidden sm:block p-6 min-h-[250px]">
         <div class="flex justify-between space-x-4">
             <a (click)="showSection('definition')"
-                class="button text-2xl border-b-2 border-transparent w-full text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                class="button text-2xl border-b-2 border-transparent w-1/3 text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
                 Definición
             </a>
             <a (click)="showSection('parameters')"
-                class="button text-2xl border-b-2 border-transparent w-full text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                class="button text-2xl border-b-2 border-transparent w-1/3 text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
                 Parámetros
             </a>
             <a (click)="showSection('applications')"
-                class="button text-2xl border-b-2 border-transparent w-full text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                class="button text-2xl border-b-2 border-transparent w-1/3 text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
                 Aplicaciones
             </a>
         </div>

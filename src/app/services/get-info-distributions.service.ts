@@ -1,12 +1,22 @@
 import { Injectable } from "@angular/core";
 import { Distribution } from "../models/distribution.model";
+import { BehaviorSubject, Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetInfoDistributionsService {
 
-  constructor() { }
+  private distributionDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public distributionData$: Observable<any> = this.distributionDataSubject.asObservable();
+
+
+  constructor() {
+    const savedData = localStorage.getItem('distributionData');
+    if (savedData) {
+      this.distributionDataSubject.next(JSON.parse(savedData));
+    }
+   }
 
   distributions: Distribution[] = [
     {
@@ -119,4 +129,10 @@ export class GetInfoDistributionsService {
     const dist = this.distributions.find((dist) => dist.name === name);
     return dist || null;
   }
+
+  updateDistributionData(data: any): void {
+    this.distributionDataSubject.next(data);
+    localStorage.setItem('distributionData', JSON.stringify(data));
+  }
+  
 }

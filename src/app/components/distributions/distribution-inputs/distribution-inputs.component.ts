@@ -20,7 +20,7 @@ export class DistributionInputsComponent implements OnInit {
   interval: string = '='
 
   private route = inject(ActivatedRoute);
-  private getInfoDistribution = inject(GetInfoDistributionsService);
+  private getInfoDistributionsService = inject(GetInfoDistributionsService);
   private distributionService = inject(DistributionService);
 
   constructor() { }
@@ -28,7 +28,7 @@ export class DistributionInputsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.distributionName = params['input'];
-      this.distribution = this.getInfoDistribution.getDistributionByName(this.distributionName);
+      this.distribution = this.getInfoDistributionsService.getDistributionByName(this.distributionName);
 
       if (this.distribution) {
         this.parameters = new Array(this.distribution.parameters.length).fill(0);
@@ -68,8 +68,15 @@ export class DistributionInputsComponent implements OnInit {
         yValue: this.yValue,
         interval: this.interval
       };
-      console.log("estooo: ", dataToSend)
-      this.distributionService.sendDistributionData(dataToSend)
+
+          this.distributionService.sendDistributionData(dataToSend).then(response => {
+        console.log('Respuesta de la API:', response);
+
+        this.getInfoDistributionsService.updateDistributionData(response);
+
+      }).catch(error => {
+        console.error('Error:', error);
+      });
     }
   }
 }

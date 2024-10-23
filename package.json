@@ -18,6 +18,7 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "axios": "^1.7.7",
     "echarts": "^5.5.1",
     "hover.css": "^2.3.2",
     "katex": "^0.16.11",

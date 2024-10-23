@@ -1,5 +1,6 @@
-import { Component, AfterViewInit, HostListener } from '@angular/core';
+import { Component, AfterViewInit,  inject } from '@angular/core';
 import * as echarts from 'echarts';
+import { GetInfoDistributionsService } from '../../../services/get-info-distributions.service';
 
 @Component({
   selector: 'app-distribution-graph',
@@ -8,40 +9,45 @@ import * as echarts from 'echarts';
   styleUrls: ['./distribution-graph.component.css'],
 })
 export class DistributionGraphComponent implements AfterViewInit {
+  private getInfoDistributionService = inject(GetInfoDistributionsService);
 
   xData: number[] = [];
   yData: number[] = [];
+  distribution: any;
   myChart: any;
 
-  ngAfterViewInit() {
-    const normalData = this.generateNormalDistributionData(0, 1, 50);
-    this.xData = normalData.xData;
-    this.yData = normalData.yData;
+  constructor() {
+    this.getInfoDistributionService.distributionData$.subscribe(data => {
+      if (data) {
+        this.distribution = data;
+        this.xData = this.distribution?.x || [0];
+        this.yData = this.distribution?.['f(x)'] || [0];
 
-    this.initializeChart();
-    this.handleResize(); // Inicializamos para asegurar el tamaño correcto
+        if (this.myChart && this.xData.length > 0 && this.yData.length > 0) {
+          this.updateChart();
+        }
+      }
+    });
   }
 
-  generateNormalDistributionData(mean: number, stdDev: number, numPoints: number): { xData: number[], yData: number[] } {
-    const xData: number[] = [];
-    const yData: number[] = [];
-
-    const step = (6 * stdDev) / numPoints;
-    for (let i = -3 * stdDev; i <= 3 * stdDev; i += step) {
-      xData.push(i);
-      const yValue = (1 / (stdDev * Math.sqrt(2 * Math.PI))) * Math.exp(-Math.pow(i - mean, 2) / (2 * Math.pow(stdDev, 2)));
-      yData.push(yValue);
-    }
-
-    return { xData, yData };
+  ngAfterViewInit() {
+    this.initializeChart();
   }
 
   initializeChart() {
     const chartDom = document.getElementById('main')!;
+    if (!chartDom) return;
+
     this.myChart = echarts.init(chartDom);
+    this.updateChart();
+
+    this.handleResize();
+  }
+
+  updateChart() {
+    if (!this.myChart) return;
 
     const option = {
-
       tooltip: {
         trigger: 'axis',
         formatter: (params: any) => {
@@ -55,9 +61,7 @@ export class DistributionGraphComponent implements AfterViewInit {
         nameLocation: 'middle',
         nameGap: 25,
         axisLine: { lineStyle: { color: 'black' } },
-        axisLabel: {
-          formatter: (val: number) => val.toFixed(2),
-        },
+        interval: 0.5,
       },
       yAxis: {
         type: 'value',
@@ -67,10 +71,9 @@ export class DistributionGraphComponent implements AfterViewInit {
         axisLine: { lineStyle: { color: 'black' } },
       },
       grid: {
-        left: '7% ',
+        left: '7%',
         right: '2%',
         bottom: '15%',
-
       },
       series: [
         {
@@ -125,11 +128,11 @@ export class DistributionGraphComponent implements AfterViewInit {
     this.myChart.setOption(option);
   }
 
-
-  @HostListener('window:resize')
   handleResize() {
-    if (this.myChart) {
-      this.myChart.resize();
-    }
+    window.addEventListener('resize', () => {
+      if (this.myChart) {
+        this.myChart.resize();
+      }
+    });
   }
 }
