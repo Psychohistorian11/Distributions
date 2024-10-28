@@ -19,6 +19,7 @@ export class DistributionInputsComponent implements OnInit {
   public parametersEntries: { key: string, value: string }[] = [];
   yValue: number = 0;
   interval: string = ''
+  type: string = ''
 
   private route = inject(ActivatedRoute);
   private getInfoDistributionsService = inject(GetInfoDistributionsService);
@@ -32,6 +33,7 @@ export class DistributionInputsComponent implements OnInit {
       this.distributionName = params['input'];
       this.distribution = this.getInfoDistributionsService.getDistributionByName(this.distributionName);
       this.interval = Object.values(this.distribution!.intervals)[0];
+      this.type = this.distribution!.type
 
 
       if (this.distribution) {
@@ -79,11 +81,15 @@ export class DistributionInputsComponent implements OnInit {
         distribution: this.distribution,
         parameters: Object.values(this.parameters),
         yValue: this.yValue,
-        interval: this.interval
+        interval: this.interval,
+        type: this.type
 
       };
       this.distributionService.sendDistributionData(dataToSend).then(response => {
-        response.interval = dataToSend.interval;    
+        response.interval = dataToSend.interval;  
+        response.type = dataToSend.type;
+        response.Xvalue = dataToSend.yValue
+
         this.getInfoDistributionsService.updateDistributionData(response);
       }).catch(error => {
         console.error('Error:', error);

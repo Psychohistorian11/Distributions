@@ -1,15 +1,16 @@
 <div class="rounded-lg m-4 bg-white shadow-lg">
-    <!-- Modo Mobile -->
     <div class="sm:hidden">
+        
         <button (click)="toggle()"
-            class="w-full text-left p-4 bg-gray-300 flex justify-between items-center hover:bg-gray-400 transition-colors">
+            class="w-full text-left p-4 bg-gray-300 flex justify-between items-center
+             hover:bg-gray-400 transition-colors rounded-t-lg">
             <span>Información de Distribución</span>
             <span [ngClass]="{ 'rotate-180': isOpen }" class="transition-transform duration-300">
                 &#9660;
             </span>
-        </button>   
+        </button>
 
-        <div *ngIf="isOpen" class="p-4 space-y-2 text-sm">
+        <div *ngIf="isOpen" class="p-4 text-sm">
             
             <div class="flex justify-between font-semibold">
                 <a (click)="showSection('definition')"
@@ -50,7 +51,6 @@
         </div>
     </div>
 
-    <!-- Modo Desktop -->
     <div class="hidden sm:block p-6">
         <div class="flex justify-between space-x-4 font-semibold">
             <a (click)="showSection('definition')"

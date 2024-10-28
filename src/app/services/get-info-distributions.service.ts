@@ -32,8 +32,8 @@ export class GetInfoDistributionsService {
       examples: 'Lanzar una moneda 10 veces y contar las caras, número de productos defectuosos en un lote.',
       intervals: {
         'P(Y = y)': '=',
-        'P(Y <= y)': '<=',
-        'P(Y => y)': '>='
+        'P(Y <= y)': '<',
+        'P(Y => y)': '>'
       }
     },
     {
@@ -49,8 +49,8 @@ export class GetInfoDistributionsService {
       examples: 'Número de autos que pasan por un peaje en una hora, número de correos electrónicos recibidos en un día.',
       intervals: {
         'P(Y = y)': '=',
-        'P(Y <= y)': '<=',
-        'P(Y => y)': '>='
+        'P(Y <= y)': '<',
+        'P(Y => y)': '>'
       }
     },
     {
