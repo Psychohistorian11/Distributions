@@ -13,6 +13,8 @@ export class DistributionGraphComponent implements AfterViewInit {
 
   xData: number[] = [];
   yData: number[] = [];
+  probability: number = 0;
+  interval: string = ''
   distribution: any;
   myChart: any;
 
@@ -20,6 +22,9 @@ export class DistributionGraphComponent implements AfterViewInit {
     this.getInfoDistributionService.distributionData$.subscribe(data => {
       if (data) {
         this.distribution = data;
+
+        this.probability = this.distribution?.probability || 0;
+        this.interval = this.distribution?.interval || '';
         this.xData = this.distribution?.x || [0];
         this.yData = this.distribution?.['f(x)'] || [0];
 
@@ -46,7 +51,16 @@ export class DistributionGraphComponent implements AfterViewInit {
 
   updateChart() {
     if (!this.myChart) return;
-
+  
+    // Filtra los puntos de datos según el intervalo
+    const shadedData = this.xData
+      .map((x, i) => ( // Mapea los datos para formar puntos [x, y]
+        this.interval === '>' && x >= this.probability ? [x, this.yData[i]] :
+        this.interval === '<' && x <= this.probability ? [x, this.yData[i]] :
+        null
+      ))
+      .filter(point => point !== null); // Remueve los puntos fuera del intervalo
+  
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -76,6 +90,7 @@ export class DistributionGraphComponent implements AfterViewInit {
         bottom: '15%',
       },
       series: [
+        // Serie principal de la curva
         {
           data: this.yData.map((y, index) => [this.xData[index], y]),
           type: 'line',
@@ -94,12 +109,35 @@ export class DistributionGraphComponent implements AfterViewInit {
             },
             width: 1,
           },
-          areaStyle: {
-            opacity: 0.1,
-          },
           emphasis: {
             focus: 'series',
           },
+          markLine: {
+            data: [
+              {
+                xAxis: this.probability,
+                label: {
+                  formatter: 'Probability',
+                  position: 'end',
+                },
+                lineStyle: {
+                  color: 'orange',
+                  type: 'dashed',
+                  width: 2,
+                },
+              },
+            ],
+          },
+        },
+        // Serie para sombrear bajo la curva
+        {
+          data: shadedData,
+          type: 'line',
+          smooth: true,
+          areaStyle: {
+            color: 'rgba(255, 165, 0, 0.3)', // Color del área sombreada
+          },
+          lineStyle: { opacity: 0 }, // Línea invisible
         },
       ],
       dataZoom: [
@@ -124,9 +162,10 @@ export class DistributionGraphComponent implements AfterViewInit {
         },
       },
     };
-
+  
     this.myChart.setOption(option);
   }
+  
 
   handleResize() {
     window.addEventListener('resize', () => {

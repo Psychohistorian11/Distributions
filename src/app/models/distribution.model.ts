@@ -3,7 +3,7 @@ export interface Distribution {
     image: string;
     type: string;
     description: string;
-    parameters: string[];
+    parameters: {[key: string ]: string};
     densityFunction: string;
     applications: string;
     examples: string

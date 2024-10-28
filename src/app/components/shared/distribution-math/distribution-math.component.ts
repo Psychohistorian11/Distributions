@@ -14,7 +14,6 @@ export class DistributionMathComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.renderMathJax();
-    console.log(this.distributionFunction.densityFunction)
   }
 
   private renderMathJax() {

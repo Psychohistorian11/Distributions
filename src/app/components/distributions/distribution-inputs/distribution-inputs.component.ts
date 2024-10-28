@@ -15,34 +15,42 @@ import { FormsModule } from '@angular/forms';
 export class DistributionInputsComponent implements OnInit {
   public distributionName = '';
   public distribution: Distribution | null = null;
-  public parameters: number[] = [];
-  yValue: number = 0
-  interval: string = '='
+  public parameters: { [key: string]: number } = {};
+  public parametersEntries: { key: string, value: string }[] = [];
+  yValue: number = 0;
+  interval: string = ''
 
   private route = inject(ActivatedRoute);
   private getInfoDistributionsService = inject(GetInfoDistributionsService);
   private distributionService = inject(DistributionService);
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.distributionName = params['input'];
       this.distribution = this.getInfoDistributionsService.getDistributionByName(this.distributionName);
+      this.interval = Object.values(this.distribution!.intervals)[0];
+
 
       if (this.distribution) {
-        this.parameters = new Array(this.distribution.parameters.length).fill(0);
+        this.parameters = Object.fromEntries(
+          Object.keys(this.distribution.parameters).map(key => [key, 0])
+        );
+        this.parametersEntries = this.getParameterEntries(this.distribution.parameters);
       }
+
     });
   }
 
-  onInputChange(event: Event, index: number): void {
+  onInputChange(event: Event, key: string): void {
     const inputElement = event.target as HTMLInputElement;
-    this.parameters[index] = parseFloat(inputElement.value);
+    this.parameters[key] = parseFloat(inputElement.value);
   }
 
-  onInputChangeYvalue(event: Event): void {
-    const inputElement = event.target as HTMLInputElement
+  onInputChangeXvalue(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
     this.yValue = parseFloat(inputElement.value);
   }
 
@@ -55,25 +63,28 @@ export class DistributionInputsComponent implements OnInit {
     this.interval = selectElement.value;
   }
 
-  isFormValid(): boolean {
-    return this.parameters.every(param => !isNaN(Number(param))) && this.yValue !== 0 && !isNaN(Number(this.yValue));
+  isFormValid(): boolean {  
+    return Object.values(this.parameters).every(param => !isNaN(param)) && this.yValue !== 0 && !isNaN(this.yValue);
   }
 
+  getParameterEntries(parameters: { [key: string]: string }): { key: string, value: string }[] {
+    const param = Object.entries(parameters).map(([key, value]) => ({ key, value }));
+    console.log(param); 
+    return param;
+  }
 
   sendParameters(): void {
     if (this.distribution) {
       const dataToSend = {
         distribution: this.distribution,
-        parameters: this.parameters,
+        parameters: Object.values(this.parameters),
         yValue: this.yValue,
         interval: this.interval
+
       };
-
-          this.distributionService.sendDistributionData(dataToSend).then(response => {
-        console.log('Respuesta de la API:', response);
-
+      this.distributionService.sendDistributionData(dataToSend).then(response => {
+        response.interval = dataToSend.interval;    
         this.getInfoDistributionsService.updateDistributionData(response);
-
       }).catch(error => {
         console.error('Error:', error);
       });

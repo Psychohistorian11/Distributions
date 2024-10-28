@@ -10,19 +10,21 @@
         </button>   
 
         <div *ngIf="isOpen" class="p-4 space-y-2 text-sm">
-            <p>Contenido detallado sobre la distribución estadística seleccionada.</p>
-
-            <div class="flex flex-col space-y-2">
+            
+            <div class="flex justify-between font-semibold">
                 <a (click)="showSection('definition')"
-                    class="border-b-2 border-transparent pb-1 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                    class="border-b-2 border-transparent pb-1 cursor-pointer
+                     hover:border-blue-600  duration-200 bg-slate-300 p-1 rounded-lg hover:scale-105 transition-all">
                     Definición
                 </a>
                 <a (click)="showSection('parameters')"
-                    class="border-b-2 border-transparent pb-1 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                    class="border-b-2 border-transparent pb-1 cursor-pointer
+                     hover:border-blue-600  duration-200 bg-slate-300 p-1 rounded-lg hover:scale-105 transition-all">
                     Parámetros
                 </a>
                 <a (click)="showSection('applications')"
-                    class="border-b-2 border-transparent pb-1 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                    class="border-b-2 border-transparent pb-1 cursor-pointer
+                     hover:border-blue-600  duration-200 bg-slate-300 p-1 rounded-lg hover:scale-105 transition-all">
                     Aplicaciones
                 </a>
             </div>
@@ -32,7 +34,12 @@
             </div>
 
             <div *ngIf="selectedSection === 'parameters'" class="mt-4 max-h-52 overflow-y-auto">
-                <p>Parámetros: {{ distribution?.parameters }}</p>
+                <p>Parámetros:</p>
+                    <ul>
+                        <li *ngFor="let key of getParameterKeys()">
+                            {{ key }}
+                        </li>
+                    </ul>
                 <app-distribution-math [distributionFunction]="distribution!"></app-distribution-math>
             </div>
 
@@ -47,15 +54,15 @@
     <div class="hidden sm:block p-6">
         <div class="flex justify-between space-x-4 font-semibold">
             <a (click)="showSection('definition')"
-                class="text-2xl border-b-2 border-transparent w-1/3 text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                class="text-2xl border-b-2 border-transparent w-1/3 text-center pb-2 cursor-pointer hover:border-secondColor transition-all duration-200">
                 Definición
             </a>
-            <a (click)="showSection('parameters')"
-                class="text-2xl border-b-2 border-transparent w-1/3 text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
+            <a (click)="showSection('parameters')"  
+                class="text-2xl border-b-2 border-transparent w-1/3 text-center pb-2 cursor-pointer hover:border-secondColor transition-all duration-200">
                 Parámetros
             </a>
             <a (click)="showSection('applications')"
-                class="text-2xl border-b-2 border-transparent w-1/3 text-center pb-2 cursor-pointer hover:border-blue-600 transition-all duration-200">
+                class="text-2xl border-b-2 border-transparent w-1/3 text-center pb-2 cursor-pointer hover:border-secondColor transition-all duration-200">
                 Aplicaciones
             </a>
         </div>
@@ -65,7 +72,12 @@
         </div>
 
         <div *ngIf="selectedSection === 'parameters'" class="mt-6 lg:max-w-[400px] lg:min-h-[100px] lg:max-h-[100px] overflow-y-auto p-4">
-            <p class="text-xs">Parámetros: {{ distribution?.parameters }}</p>
+            <p class="text-xs">Parámetros:</p>
+                   
+                <div class="text-xs" *ngFor="let key of getParameterKeys()">
+                    {{ key }}
+                </div>
+                         
             <app-distribution-math [distributionFunction]="distribution!"></app-distribution-math>
         </div>
 

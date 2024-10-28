@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { GetInfoDistributionsService } from '../../../services/get-info-distributions.service';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +9,7 @@ import { DistributionMathComponent } from "../../shared/distribution-math/distri
 @Component({
   selector: 'app-distribution-content',
   standalone: true,
-  imports: [NgClass, NgIf, DistributionMathComponent],
+  imports: [NgClass, NgIf, DistributionMathComponent, NgFor],
   templateUrl: './distribution-content.component.html'
 })
 export class DistributionContentComponent implements OnInit {
@@ -21,6 +21,7 @@ export class DistributionContentComponent implements OnInit {
 
   private getInfoDistribution = inject(GetInfoDistributionsService);
   private route = inject(ActivatedRoute);
+Object: any;
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -37,5 +38,8 @@ export class DistributionContentComponent implements OnInit {
     this.selectedSection = section;
   }
 
+  getParameterKeys(): string[] {
+    return this.distribution?.parameters ? Object.keys(this.distribution.parameters) : [];
+  }
 
 }
