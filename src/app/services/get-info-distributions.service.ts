@@ -54,7 +54,7 @@ export class GetInfoDistributionsService {
       image: './../../assets/uniformDistribution.png',
       type: 'Continua',
       description: 'La distribución uniforme asigna igual probabilidad a cualquier valor dentro de un intervalo especificado.',
-      parameters: ['θ_1,', ' θ_2'],
+      parameters: ['θ_1', ' θ_2'],
       densityFunction: 'f(y) = \\frac{1}{\\theta_{{{}}2{{}}} - \\theta_{{{}}1{{}}}}, \\quad \\text{para } \\quad  \\theta_{{{}}1{{}}} \\leq y \\leq \\theta_{{{}}2{{}}}',
       applications: 'Se utiliza en simulaciones y muestreo aleatorio donde cada resultado tiene la misma probabilidad.',
       examples: 'Lanzar un dado justo, seleccionar un número al azar entre dos límites.',

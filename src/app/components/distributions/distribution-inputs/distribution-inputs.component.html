@@ -1,40 +1,39 @@
-<div class="rounded-lg m-4 bg-white shadow-lg p-6">
-    <h2 class="text-2xl font-semibold mb-4">{{ distribution!.name }} - Parámetros</h2>
-
-    <ul class="sm:flex flex-wrap justify-between space-y-4 sm:space-y-0">
-        <li *ngFor="let param of distribution!.parameters; let i = index" class="w-full sm:w-[48%]">
+<div class="rounded-lg bg-white shadow-lg p-6 m-4">
+    <h2 class="text-xl font-semibold mb-4">{{ distribution!.name }} - Parámetros</h2>
+    <ul class="flex flex-wrap space-y-4 sm:space-y-0">
+        <li *ngFor="let param of distribution!.parameters; let i = index" class="w-full sm:w-1/2">
             <label class="block font-semibold mb-1">{{ param }}:</label>
             <input type="number"
-                class="border border-gray-300 rounded p-2 w-full hover:scale-105 hover:border-gray-800   transition-all duration-200"
+                class="border border-gray-300 rounded p-2 w-full hover:scale-105
+                 hover:border-gray-800 transition-all duration-200 "
                 placeholder="{{ param }}" [(ngModel)]="parameters[i]" (input)="onInputChange($event, i)" />
         </li>
     </ul>
 
     <div class="mt-6 space-y-4">
-        <div class="flex items-center justify-between">
-            <label class="font-semibold w-1/3">Posición para Y:</label>
+        <div class="flex items-center">
+            <label class="text-xs mr-4">Posición para Y:</label>
             <input type="number" required
-                class="border border-gray-300 rounded p-2 w-2/3 hover:scale-105 hover:border-gray-800 focus:ring focus:ring-secondColor transition-all duration-200"
+                class="border border-gray-300 rounded p-2 w-2/3 hover:scale-105
+                 hover:border-gray-800 focus:ring focus:ring-secondColor transition-all duration-200"
                 placeholder="Ingresa valor para Y" (input)="onInputChangeYvalue($event)" />
         </div>
 
-        <div class="mt-6 space-y-4">
-            <div class="flex items-center justify-between">
-                <label class="font-semibold w-1/3">Selecciona un intervalo:</label>
-                <select
-                    class="border border-gray-300 rounded p-2 w-2/3 hover:scale-105 hover:border-gray-800 focus:ring focus:ring-secondColor transition-all duration-200"
-                    (change)="onIntervalChange($event)">
-                    <option *ngFor="let key of getIntervalKeys()" [value]="distribution!.intervals[key]">{{ key }}
-                    </option>
-                </select>
-            </div>
+        <div class="flex items-center mt-6">
+            <label class="text-xs mr-4">Selecciona un intervalo:</label>
+            <select
+                class="border border-gray-300 rounded p-2  hover:scale-105 hover:border-gray-800
+                 focus:ring focus:ring-secondColor transition-all duration-200"
+                (change)="onIntervalChange($event)">
+                <option *ngFor="let key of getIntervalKeys()" [value]="distribution!.intervals[key]">{{ key }}
+                </option>
+            </select>
         </div>
     </div>
 
-    <div class="mt-6 w-full flex justify-end">
-        <button type="submit" class="bg-firstColor text-white rounded-lg py-3 px-6 inline-block font-semibold 
-        transition-all duration-300 transform hover:bg-secondColor hover:text-black hover:scale-105 
-        cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-secondColor" aria-label="Start Exploring"
+    <div class="mt-6 flex justify-end">
+        <button type="submit"
+            class="bg-firstColor text-white rounded-lg py-3 px-6 font-semibold transition-all duration-300 transform hover:bg-secondColor hover:text-black hover:scale-105 focus:ring-2 focus:ring-offset-2 focus:ring-secondColor"
             (click)="sendParameters()" [disabled]="!isFormValid()">
             Enviar
         </button>
