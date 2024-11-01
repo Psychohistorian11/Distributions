@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 })
 export class DistributionService {
 
-  private apiUrl = 'http://127.0.0.1:8000';
+  private apiUrl = 'https://distributions-api-seven.vercel.app';
   private api = axios.create({ baseURL: this.apiUrl, withCredentials: true });
   currentDistribution: Distribution | null = null
 
